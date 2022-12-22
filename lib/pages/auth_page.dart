@@ -29,7 +29,6 @@ class _AuthPageState extends State<AuthPage> {
         password: password,
       );
     } on FirebaseAuthException catch (e) {
-      //print(e.code!);
       setState(() {
         errorMessage = e.message;
       });
@@ -41,7 +40,6 @@ class _AuthPageState extends State<AuthPage> {
       await Auth().signUp(
           email: email, password: password, name: username, isAdmin: isAdmin);
     } on FirebaseAuthException catch (e) {
-      //print(e.message!);
       setState(() {
         errorMessage = e.message;
       });
@@ -61,11 +59,6 @@ class _AuthPageState extends State<AuthPage> {
               const SizedBox(height: 8),
             ],
           );
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   @override
@@ -122,12 +115,8 @@ class _AuthPageState extends State<AuthPage> {
                               !isLogin
                                   ? TextFormField(
                                       textInputAction: TextInputAction.next,
-                                      keyboardType: TextInputType.text,
-                                      style: const TextStyle(),
                                       decoration: const InputDecoration(
                                         labelText: "Username",
-                                        errorStyle:
-                                            TextStyle(color: Colors.red),
                                       ),
                                       onChanged: (val) => setState(() {
                                         username = val;
@@ -144,10 +133,8 @@ class _AuthPageState extends State<AuthPage> {
                                 height: 10,
                               ),
                               TextFormField(
-                                style: const TextStyle(),
                                 decoration: const InputDecoration(
                                   labelText: "Email",
-                                  errorStyle: TextStyle(color: Colors.red),
                                 ),
                                 textInputAction: TextInputAction.next,
                                 keyboardType: TextInputType.emailAddress,
@@ -169,14 +156,9 @@ class _AuthPageState extends State<AuthPage> {
                                 height: 10,
                               ),
                               TextFormField(
-                                style: const TextStyle(),
                                 decoration: InputDecoration(
-                                  labelStyle: const TextStyle(),
                                   labelText: "Password",
-                                  errorStyle:
-                                      const TextStyle(color: Colors.red),
                                   suffixIcon: IconButton(
-                                    //color: brownColor,
                                     icon: Icon(_passwordVisible
                                         ? Icons.visibility
                                         : Icons.visibility_off),
@@ -215,14 +197,9 @@ class _AuthPageState extends State<AuthPage> {
                                       keyboardType:
                                           TextInputType.visiblePassword,
                                       obscureText: !_confirmPasswordVisible,
-                                      style: const TextStyle(),
                                       decoration: InputDecoration(
-                                        labelStyle: const TextStyle(),
-                                        errorStyle:
-                                            const TextStyle(color: Colors.red),
                                         labelText: "Confirm password",
                                         suffixIcon: IconButton(
-                                          //color: brownColor,
                                           icon: Icon(_confirmPasswordVisible
                                               ? Icons.visibility
                                               : Icons.visibility_off),
@@ -281,7 +258,6 @@ class _AuthPageState extends State<AuthPage> {
                                 height: 50,
                                 child: ElevatedButton.icon(
                                   icon: const Icon(Icons.login_rounded),
-                                  //style: primaryButtonStyle,
                                   onPressed: () {
                                     final form = _formKey.currentState;
                                     if (form!.validate()) {

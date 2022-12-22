@@ -7,8 +7,6 @@ class Auth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   User? get currentUser => _firebaseAuth.currentUser;
   Stream<User?> get authStateChange => _firebaseAuth.authStateChanges();
-  final bool _isWrongPassword = false;
-  bool get isWrongPassword => _isWrongPassword;
 
   Future<void> signIn({
     required String email,

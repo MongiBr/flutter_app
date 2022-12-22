@@ -64,67 +64,65 @@ class _DishesPageState extends State<DishesPage> {
                       )
                     ],
                   ),
-                  drawer: SafeArea(
-                    child: Drawer(
-                      backgroundColor: Colors.green[50],
-                      child: ListView(
-                        padding: EdgeInsets.zero,
-                        children: [
-                          DrawerHeader(
-                              decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage("assets/images/chef.jpg"),
-                                  fit: BoxFit.cover,
-                                ),
+                  drawer: Drawer(
+                    backgroundColor: Colors.green[50],
+                    child: ListView(
+                      padding: EdgeInsets.zero,
+                      children: [
+                        DrawerHeader(
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage("assets/images/chef.jpg"),
+                                fit: BoxFit.cover,
                               ),
-                              child: Container()),
-                          ListTile(
-                            leading: Icon(
-                              user.data!.isAdmin
-                                  ? Icons.my_library_add
-                                  : Icons.favorite_rounded,
-                              size: 30,
                             ),
-                            title: user.data!.isAdmin
-                                ? const Text(
-                                    'Add a new dish',
-                                  )
-                                : const Text(
-                                    'View favorites',
-                                  ),
-                            onTap: () {
-                              Navigator.pop(context);
-                              if (user.data!.isAdmin) {
-                                newDishDialog(context, dishNameController);
-                              } else {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const FavoritesPage(),
-                                  ),
-                                );
-                              }
-                            },
+                            child: Container()),
+                        ListTile(
+                          leading: Icon(
+                            user.data!.isAdmin
+                                ? Icons.my_library_add
+                                : Icons.favorite_rounded,
+                            size: 30,
                           ),
-                          ListTile(
-                            leading: const Icon(
-                              Icons.logout_rounded,
-                              size: 30,
-                            ),
-                            title: const Text(
-                              'Sign out',
-                            ),
-                            onTap: () {
-                              Auth().signOut();
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: ((context) => const HomePage())),
-                                  (route) => false);
-                            },
+                          title: user.data!.isAdmin
+                              ? const Text(
+                                  'Add a new dish',
+                                )
+                              : const Text(
+                                  'View favorites',
+                                ),
+                          onTap: () {
+                            Navigator.pop(context);
+                            if (user.data!.isAdmin) {
+                              newDishDialog(context, dishNameController);
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const FavoritesPage(),
+                                ),
+                              ).then((_) => getDishes());
+                            }
+                          },
+                        ),
+                        ListTile(
+                          leading: const Icon(
+                            Icons.logout_rounded,
+                            size: 30,
                           ),
-                        ],
-                      ),
+                          title: const Text(
+                            'Sign out',
+                          ),
+                          onTap: () {
+                            Auth().signOut();
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) => const HomePage())),
+                                (route) => false);
+                          },
+                        ),
+                      ],
                     ),
                   ),
                   floatingActionButton: user.data!.isAdmin
@@ -229,10 +227,19 @@ class _DishesPageState extends State<DishesPage> {
                       width: double.maxFinite,
                       child: ElevatedButton(
                           onPressed: () {
-                            Firestore.addDish(dishNameController.text);
-                            dishNameController.text = "";
-                            Navigator.pop(context);
-                            getDishes();
+                            if (dishNameController.text != "") {
+                              Firestore.addDish(dishNameController.text);
+                              dishNameController.text = "";
+                              Navigator.pop(context);
+                              getDishes();
+                            } else {
+                              showDialog(
+                                context: context,
+                                builder: (context) => const AlertDialog(
+                                  content: Text("Dish name shouldn't be empty"),
+                                ),
+                              );
+                            }
                           },
                           child: const Text("Confirm")),
                     ),

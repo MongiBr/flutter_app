@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../controllers/auth_controller.dart';
 import '../controllers/firestore_controller.dart';
 import '../models/dish_model.dart';
+import 'home_page.dart';
 
 class FavoritesPage extends StatefulWidget {
   const FavoritesPage({super.key});
@@ -36,14 +37,60 @@ class _FavoritesPageState extends State<FavoritesPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Dishes"),
+        title: const Text("Favorites"),
         actions: [
           IconButton(
-              onPressed: () {
-                Auth().signOut();
-              },
-              icon: const Icon(Icons.logout))
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.list_alt_rounded),
+          )
         ],
+      ),
+      drawer: Drawer(
+        backgroundColor: Colors.green[50],
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/chef.jpg"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: Container()),
+            ListTile(
+              leading: const Icon(
+                Icons.list_alt_rounded,
+                size: 30,
+              ),
+              title: const Text(
+                'View all dishes',
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.logout_rounded,
+                size: 30,
+              ),
+              title: const Text(
+                'Sign out',
+              ),
+              onTap: () {
+                Auth().signOut();
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: ((context) => const HomePage())),
+                    (route) => false);
+              },
+            ),
+          ],
+        ),
       ),
       body: FutureBuilder<List<DishModel>?>(
           future: favorites,
