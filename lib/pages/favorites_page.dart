@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
-import '../controllers/auth_controller.dart';
 import '../controllers/firestore_controller.dart';
+import '../controllers/auth_controller.dart';
 import '../models/dish_model.dart';
 import 'home_page.dart';
 
